@@ -1,0 +1,18 @@
+{% extends "main.html" %}
+{% set pagename = "index" %}
+{% block content %}
+
+<div class="container-fluid">
+  <div class="jumobtron" style="background-color:lightyellow;">
+    <h1>Product Index</h1>
+    <hr/>
+  <ul>
+    {% for i in items %}
+    <p><a href="{{url_for('itemDescription', item_id = i.id, category_id = i.category.id)}}">
+    {{i.name}} ({{"category: "}}{{i.category.name}})</a><p>
+  {% endfor %}
+  </ul>
+</div>
+</div>
+
+{% endblock %}

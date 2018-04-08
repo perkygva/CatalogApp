@@ -1,0 +1,46 @@
+{% extends "main.html" %}
+{% include "flash_alerts.html" %}
+{% block content %}
+
+<div id="addItem" class="container container-fluid">
+    <div class="content container-fluid text-left">
+        <h1>Add Item</h1>
+
+        <form action="#" method = "post" class="padding-top-10">
+            <div class="form-group">
+                <label for="name">Item Name:</label>
+                <input type ="text" class="form-control" id="name" maxlength="100"
+                style="width:200px" name="name">
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea name="description" id="description" class="form-control"
+                          maxlength="250" rows="5" style="width:500px;"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="price">Price (USD):</label>
+                <input type="text" class="form-control" id="price" maxlength="10"
+                                  style="width:100px;" name="price">
+            </div>
+            <div class="form-group">
+                <label for="category">Category:</label>
+                <select class="form-group" id="category" name="category">
+                {% for c in category %}
+                    <option value="{{c.id}}">{{c.name}}</option>
+                {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="submit" id="submit" class="btn btn-primary">Save</button>
+                <a href="{{url_for('showCatalog')}}">
+                    <button type="button" class="btn btn-danger">Cancel</button>
+                </a>
+                <a href="{{url_for('newCategory')}}">
+                  <button type="button" class="btn btn-link">New Category</button>
+               </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

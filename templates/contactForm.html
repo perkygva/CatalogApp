@@ -1,0 +1,34 @@
+{% extends 'main.html' %}
+{% set pagename = "contact" %}
+{% block content %}
+
+<div class="container">
+  <div class="container text-left">
+  <form action="action_page.php">
+    <h2>Contact Form</h2>
+    <label for="fname">First Name: </label>
+      <input type="text-ct" id="fname" name="firstname" placeholder="Your name..">
+    <br>
+    <label for="lname">Last Name: </label>
+      <input type="text-ct" id="lname" name="lastname" placeholder="Your last name..">
+    <br>
+      <label for="email">Your Email: </label>
+      <input type="text-ct" id="email" name="email" placeholder="john.doe@email.com">
+    <br>
+    <label for="country">Your Country: </label>
+    <select id="country" name="country" style="width:400px;">
+      <option value="Europe">Europe</option>
+      <option value="Americas">Americas</option>
+      <option value="Asia">Asia</option>
+   </select>
+   <br><br>
+    <label for="subject"></label>
+    <textarea id="subject" name="Subject" placeholder="Write something.." maxlength="500"
+              style="height:150px; width:500px"></textarea>
+    <br>
+    <input type="submit" value="Submit">
+
+  </form>
+</div>
+
+{% endblock %}

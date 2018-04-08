@@ -1,0 +1,43 @@
+{% extends "main.html" %}
+{% set pagename = "home" %}
+{% include "flash_alerts.html" %}
+{% block content %}
+
+<div class="row">
+	 <div class="container">
+		 	<h2>Perky-List! Sell your junk online!</h2>
+					<div class="jumbotron text-center col-md-6 container-home-2"
+				  	style = "border-right: solid black;">
+				<h2>Categories</h2>
+					<hr>
+						<ul style="list-style-type:none;">
+						{% for c in category %}
+							<li><p style="font-size:28px; line-height:1;">
+								<a href="{{url_for('showItems', category_id=c.id)}}">{{c.name}}
+							 </a></p><li>
+							{% else %}
+							<h2 style="font-size:50px">"No category available.</h2>
+							{% endfor %}
+				</ul>
+			</div>
+
+			<div class="jumbotron text-left col-md-6 container-home-2">
+				<h2>Latest Items</h2>
+				<hr>
+					<ul>
+					{% for i in items %}
+							<li><p style="font-size:18px; line-height:1.1;">
+									<a href="{{ url_for('itemDescription',
+									 item_id = i.id, category_id = i.category.id) }}">{{i.name}}</a>
+									 ({{i.category.name}})
+							</p></li>
+					{% else %}
+							<h2 style="font-size:50px;">No items here.</h2>
+					{% endfor %}
+					</ul>
+			</div>
+	</div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "main.html" %}
+{% block content %}
+
+<div class="container" style="background-color:#FFF;">
+	<h2>Product Description</h2>
+		<div class="row">
+		<div class="jumbotron col-md-12">
+				<h2>{{ item.name }}</h2>
+        <h5>{{ item.price }} | {{"Category: "}}{{ item.category.name }}</h5>
+        <p>{{ item.description }}</p>
+			<hr>
+
+		  <p><a href="{{url_for('editItem', item_id = item.id)}}">
+				<button type="submit" id="edit" class="btn btn-warning">
+					Edit ITEM</button>
+				</a>
+				<a href = "{{url_for('deleteItem', item_id=item.id)}}">
+				<button type="button" id="delete" class="btn btn-danger">DELETE ITEM!</button>
+			 </a>
+			<button</p>
+		</div>
+
+	</div>
+</div>
+
+{% endblock %}

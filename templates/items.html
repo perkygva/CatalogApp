@@ -1,0 +1,33 @@
+{% extends "main.html" %}
+{% include "flash_alerts.html" %}
+{% block content %}
+
+<div class="container style="background-color:#FFF;>
+  <div clas="row">
+  <div class="jumbotron col-md-12">
+  <h2>Category: {{category.name}} <span>
+    <a href="{{url_for('editCategory', category_id=category.id)}}">
+      <button type="submit" id="edit" class="btn btn-warning">Edit</button>
+    <span class="glyphicon glyphicon-danger" aria-hidden="true"></span></a>
+    <a href="{{url_for('deleteCategory', category_id=category.id)}}">
+    <button type="button" id="delete" class="btn btn-danger">DELETE Category!
+      <span class="glyphicon glyphicon-danger" aria-hidden="true"></span>
+    </button>
+  </a><span></h2>
+
+  <hr/>
+  <ul>
+     {% for i in items %}
+    <h3><a href="{{url_for('itemDescription', item_id = i.id,
+              category_id = i.category.id)}}">{{i.name}}</h3></a>
+
+  {% endfor %}
+    </ul>
+</div>
+<div>
+  <h4>*Click on an item to see details</h5>
+</div>
+</div>
+</div>
+
+{% endblock %}

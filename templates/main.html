@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>FSND Item Catalog</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  	<script src="https://storage.googleapis.com/code.getmdl.io/1.0.0/material.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script src="//apis.google.com/js/platform.js?onload=start"></script>
+		<link rel=stylesheet href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='mystyle.css') }}">
+</head>
+	 <!-- Fixed navbar -->
+	<nav class="navbar-inverse fixed-top">
+   <div class="container-fluid">
+     <div class="navbar-header">
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+				 <span class= "sr-only">Toggle Navigation</span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </button>
+       <h4 class="navbar-brand">Perky-List</h4>
+     </div>
+     <div class="navbar-collapse collapse" id="myNavbar">
+       <ul class="nav navbar-nav right">
+				<li {% if pagename == 'home' %}class="active"{% endif %}><a href="{{ url_for('showCatalog') }}">Home</a></li>
+ 				<li {% if pagename == 'addItem' %}class="active"{% endif %}><a href="{{ url_for('addItem')}}">New Item</a></li>
+ 				<li {% if pagename == 'addCat' %}class="active"{% endif %}><a href="{{url_for('newCategory')}}">New Category</a></li>
+				<li {% if pagename == 'index' %}class="active"{% endif %}><a href="{{ url_for('showIndex') }}">Index</a></li>
+       </ul>
+       <ul class="nav navbar-nav navbar-right">
+				 {% if state %}
+         <li><a href="{{ url_for('logout') }}">Logout</a></li>
+				 {% else %}
+				 <li><a href="{{url_for('login')}}">Login</a></li>
+			 </ul>
+			 	{% endif %}
+			 <u1 class="nav navbar-nav navbar-right">
+				 <li {% if pagename =='contact' %} class="active" {% endif %}><a href="{{url_for('contact')}}">Contact Us!</a></li>
+			 </u1>
+		 </div>
+   </div>
+ </nav>
+<body>
+	{% block content %}{% endblock %}
+</body>
+</html>
