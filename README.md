@@ -42,7 +42,7 @@ In case of a category, this is more complicated, and only the administrator shou
 
 ### References
 - The bulk of this project was constructed using materials/solutions from the Udacity restaurant-menu projects developed along the course.
-- In addition, the Flask manual and particularly the [https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world](Flask Mega Tutorial) were great to resolve problems and check functions.
+- In addition, the Flask manual and particularly the [Flask Mega Tutorial](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world) were great to resolve problems and check functions.
 - The Udacity forum and search functionality is great, with lots of "problems" are shared among several users and guidance in solving them is provided.
 - Stack Overflow of course has an answer for just about every bug or problem!
 - W3C has some great CSS/HTML help and funtionality, as well as bootstrapping possibilities.
