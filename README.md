@@ -40,3 +40,9 @@ From the main page, you can access everything.
 Authorization is only required to edit categories and items, being only the creator of them can actually edit them. 
 In case of a category, this is more complicated, and only the administrator should have the right to change it. But in this case, only the owner can change it, which should affect only the single item and not all items under the same category.
 
+### References
+- The bulk of this project was constructed using materials/solutions from the Udacity restaurant-menu projects developed along the course.
+- In addition, the Flask manual and particularly the [https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world](Flask Mega Tutorial) were great to resolve problems and check functions.
+- The Udacity forum and search functionality is great, with lots of "problems" are shared among several users and guidance in solving them is provided.
+- Stack Overflow of course has an answer for just about every bug or problem!
+- W3C has some great CSS/HTML help and funtionality, as well as bootstrapping possibilities.
