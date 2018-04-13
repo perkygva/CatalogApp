@@ -17,11 +17,10 @@ It is the project for the **BackEnd** section in Udacity's Full Stack Nanodegree
 `$pip install -r requirements.txt`
 
 ## Running the Catalog App
-- Run **python database_setup.py** to initialize the database.
-- Run itemdump.py
-- Run application.py to run the Flask web server.
+- Run `database_setup.py` to initialize the database.
+- Run `itemdump.py`
+- Run `application.py` to run the Flask web server.
 - In your browser visit **http://localhost:8000** to view the catalog main page.
-
 
 ## Catalogg App
 Once the app is up and running you are able to view the main page, the item
@@ -45,4 +44,4 @@ In case of a category, this is more complicated, and only the administrator shou
 - In addition, the Flask manual and particularly the [Flask Mega Tutorial](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world) were great to resolve problems and check functions.
 - The Udacity forum and search functionality is great, with lots of "problems" are shared among several users and guidance in solving them is provided.
 - Stack Overflow of course has an answer for just about every bug or problem!
-- W3C has some great CSS/HTML help and funtionality, as well as bootstrapping possibilities.
+- W3C has some great CSS/HTML help and functionality, as well as bootstrapping possibilities.
