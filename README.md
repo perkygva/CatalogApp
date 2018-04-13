@@ -19,7 +19,7 @@ It is the project for the **BackEnd** section in Udacity's Full Stack Nanodegree
 ## Running the Catalog App
 - Run **python database_setup.py** to initialize the database.
 - Run itemdump.py
-- Run applicayion.py to run the Flask web server.
+- Run application.py to run the Flask web server.
 - In your browser visit **http://localhost:8000** to view the catalog main page.
 
 
@@ -32,12 +32,12 @@ authorized, you'll receive a flash messaged (displayed at the top of the screen)
 If you're the owner, you can also delete items and categories.
 
 From the main page, you can access everything.
-- Use navbar to add new categories and items.
+- Use the navbar to add new categories and items.
 - Clicking on a category gives you the category item list and category edit options.
 - Clicking on an item gives you the item description and item editing page.
 
 ### Authorization
-Authorization is only required to edit categories and items, being only the creator of them can actually edit them. 
+Authorization is only required to edit categories and items, being only the creator of them can actually edit them.
 In case of a category, this is more complicated, and only the administrator should have the right to change it. But in this case, only the owner can change it, which should affect only the single item and not all items under the same category.
 
 ### References

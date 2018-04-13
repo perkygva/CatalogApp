@@ -5,7 +5,11 @@ from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Category, Items, User
 from flask import session as login_session
 from flask_login import login_required, logout_user
-import os, random, string, json, httplib2, requests
+import random
+import string
+import json
+import httplib2
+import requests
 from oauth2client.client import flow_from_clientsecrets, FlowExchangeError
 from functools import wraps
 
@@ -37,7 +41,6 @@ def login():
 
 # Google plus connect
 @app.route('/gconnect', methods=['POST'])
-
 def gconnect():
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid state parameter.'), 401)
@@ -54,7 +57,6 @@ def gconnect():
         oauth_flow.redirect_uri = 'postmessage'
         credentials = oauth_flow.step2_exchange(code)
     except FlowExchangeError:
-        h = httplib2.Http()
         response = make_response(
             json.dumps('Failed to upgrade the authorization code.'), 401)
         response.headers['Content-Type'] = 'application/json'
@@ -64,6 +66,8 @@ def gconnect():
     access_token = credentials.access_token
     url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s'
            % access_token)
+
+    h = httplib2.Http()
     result = json.loads(h.request(url, 'GET')[1])
 
     # If there was an error in the access token info, abort.
@@ -123,15 +127,14 @@ def gconnect():
     output += '!</h1>'
     output += '<img src="'
     output += login_session['picture']
-    output += ' "style = "width: 300px; height: 300px; border-radius: 150px;-webkit-border-radius: 150px; -moz-border-radius: 150px; "> '
+    output += (' "style=" width:300px; height:300px; border-radius:150px;">')
     flash("you are now logged in as %s" % login_session['username'])
     print "done!"
     return output
 
+
 ###########
 # Use helper functions from course materials
-
-
 def createUser(login_session):
     newUser = User(
         name=login_session['username'],
@@ -155,6 +158,7 @@ def getUserID(email):
     except:
         return None
 
+
 #####################
 # JSON APIs endpoints
 @app.route('/catalog/JSON')
@@ -162,8 +166,24 @@ def catalogJSON():
     category = session.query(Category).all()
     items = session.query(Items).all()
     return jsonify(
-        category = [c.serialize for c in category],
-        items = [i.serialize for i in items])
+        category=[c.serialize for c in category],
+        items=[i.serialize for i in items])
+
+
+@app.route('/items/JSON')
+def itemsJSON():
+    items = session.query(Items).all()
+    return jsonify(
+        items=[i.serialize for i in items]
+    )
+
+
+@app.route('/categories/JSON')
+def categories():
+    categories = session.request(Category).all()
+    return jsonify(
+        category=[c.serialize for c in categories]
+    )
 
 
 # Flask set and routing
@@ -175,33 +195,36 @@ def showCatalog():
     Order category alphabetically and items by date added."""
     category = session.query(Category).order_by(asc(Category.name))
     items = session.query(Items).order_by(Items.date.desc()).limit(10)
-    return render_template('catalog.html', category = category, items = items)
+    return render_template('catalog.html', category=category, items=items)
+
 
 # Show all items
 @app.route('/<int:category_id>/items')
 def showItems(category_id):
     category = session.query(Category).filter_by(id=category_id).one()
-    items = session.query(Items).filter_by(category_id = category_id).all()
-    return render_template('items.html', items = items, category = category)
+    items = session.query(Items).filter_by(category_id=category_id).all()
+    return render_template('items.html', items=items, category=category)
+
 
 @app.route('/index')
 def showIndex():
     category = session.query(Category).all()
     items = session.query(Items).all()
-    return render_template('index.html', items = items, category = category)
+    return render_template('index.html', items=items, category=category)
+
 
 # Item details, specification pagename
 @app.route('/<int:category_id>/<int:item_id>')
 def itemDescription(category_id, item_id):
     category = session.query(Category).filter_by(id=category_id).one()
     item = session.query(Items).filter_by(id=item_id).one()
-    return render_template("itemDescription.html", item = item,
-                            category = category)
+    return render_template("itemDescription.html", item=item,
+                           category=category)
+
 
 #############
 # EDITING
 #############
-
 # Add a new Category to catalog
 @app.route('/catalog/newCategory', methods=['GET', 'POST'])
 def newCategory():
@@ -212,7 +235,7 @@ def newCategory():
     if request.method == 'POST':
         newCategory = Category(
                                 name=request.form['name'],
-                                user_id = login_session["user_id"])
+                                user_id=login_session["user_id"])
         session.add(newCategory)
         session.commit()
         flash("New category {} added " .format(newCategory.name))
@@ -228,30 +251,34 @@ def editCategory(category_id):
     """In addiion to being logged in must be the owner of the category"""
     if 'username' not in login_session:
         return redirect('/login')
-    category = session.query(Category).filter_by(id=category_id).one()
-    if category.user_id != login_session["user_id"]:
+    editedCategory = session.query(Category).filter_by(id=category_id).one()
+    if editedCategory.user_id != login_session["user_id"]:
+        redirect('/login')
         return flash("You are not the owner of this category")
     # POST methods
     if request.method == 'POST':
         if request.form['name']:
-            category.name = request.form['name']
-        session.add(category)
-        session.commit()
-        flash('Category Item Successfully Edited!')
-        return  redirect(url_for('showCatalog'))
+            editedCategory.name = request.form['name']
+        flash('Category {} Successfully Edited!' .format(editedCategory))
+        return redirect(url_for('showCatalog'))
+
     else:
-        return render_template('editCategory.html', category=category)
+        return render_template('editCategory.html', category=editedCategory)
 
 
-@app.route('/catalog/<int:category_id>/deleteCategory', methods=['GET', 'POST'])
+@app.route('/catalog/<int:category_id>/deleteCategory',
+           methods=['GET', 'POST'])
 def deleteCategory(category_id):
     category = session.query(Category).filter_by(id=category_id).one()
     # See if the logged in user is the owner of item
     # If logged in user != item owner redirect them
+    if 'username' not in login_session:
+        redirect('/login')
     if category.user_id != login_session['user_id']:
-        flash ("You cannot delete this category as it belongs to someone else.")
+        flash("""You cannot delete this category as it belongs to
+                someone else.""")
         return redirect(url_for('showCatalog'))
-    if request.method =='POST':
+    if request.method == 'POST':
         session.delete(category)
         session.commit()
         flash('Category {} Successfully Deleted! ' .format(category.name))
@@ -259,20 +286,20 @@ def deleteCategory(category_id):
     else:
         return render_template('deleteCategory.html', category=category)
 
+
 # EDITING ITEMS SECTION - must be logged in for all
 @app.route('/catalog/newItems', methods=['GET', 'POST'])
-#@login_required
 def addItem():
     if 'username' not in login_session:
         return redirect('/login')
     category = session.query(Category).all()
     if request.method == 'POST':
         newItem = Items(
-        name=request.form['name'],
-        description=request.form['description'],
-        price = request.form['price'],
-        category_id = request.form["category"],
-        user_id=login_session["user_id"])
+            name=request.form['name'],
+            description=request.form['description'],
+            price=request.form['price'],
+            category_id=request.form["category"],
+            user_id=login_session["user_id"])
 
         session.add(newItem)
         session.commit()
@@ -281,11 +308,13 @@ def addItem():
     else:
         return render_template('addItem.html', category=category)
         flash("Item not added, please try again")
+
+
 # Edit an item
 @app.route('/catalog/<int:item_id>/editItem', methods=['GET', 'POST'])
 def editItem(item_id):
-    #if 'username' not in login_session:
-    #    return redirect('/login')
+    if 'username' not in login_session:
+        return redirect('/login')
     categories = session.query(Category).all()
     items = session.query(Items).all()
     editedItem = session.query(Items).filter_by(id=item_id).one()
@@ -294,8 +323,8 @@ def editItem(item_id):
     # POST methods
     if request.method == 'POST':
         if user != editedItem.user_id:
-            flash ("You cannot edit this item. You can only edit your items!")
-            return redirect(url_for('login'))
+            flash("You cannot edit this item, as you don't own it!")
+            return redirect('/login')
         if request.form['name']:
             category = session.query(Category).filter_by(
                         id=request.form['category']).one()
@@ -304,25 +333,24 @@ def editItem(item_id):
             editedItem.price = request.form['price']
             editedItem.category_id = category.id
 
-        #session.add(editedItem)
-        #session.commit()
         flash("Successfully updated item {}" .format(editedItem.name))
         return redirect(url_for("showItems",
-                    category_id = editedItem.category_id))
+                        category_id=editedItem.category_id))
     else:
         return render_template('editItem.html', item=editedItem,
-                    items=items, categories=categories)
+                               items=items, categories=categories)
 
-# Delete an item, category deletion is excluded as this would delete all items within. Only admin should have category deletion rights
+
+# Delete an item
 @app.route('/catalog/<int:item_id>/deleteItem', methods=['GET', 'POST'])
 def deleteItem(item_id):
     item = session.query(Items).filter_by(id=item_id).one()
     # See if the logged in user is the owner of item
     # If logged in user != item owner redirect them
     if item.user_id != login_session['user_id']:
-        flash ("You cannot delete this item as it belongs to someone else.")
+        flash("You cannot delete this item as it belongs to someone else.")
         return redirect(url_for('showCatalog'))
-    if request.method =='POST':
+    if request.method == 'POST':
         session.delete(item)
         session.commit()
         flash('Item {} Successfully Deleted! ' .format(item.name))
@@ -330,16 +358,18 @@ def deleteItem(item_id):
     else:
         return render_template('deleteItem.html', item=item)
 
+
 @app.route('/contact')
 def contact():
     return render_template("contactForm.html")
+
 
 # Disconnect and reset login_session
 @app.route('/gdisconnect')
 def gdisconnect():
     access_token = login_session.get('access_token')
     if access_token is None:
-        response = make_response(json.dumps('Current user not connected.'), 401)
+        response = make_response(json.dumps('User not connected.'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -348,7 +378,7 @@ def gdisconnect():
     result = h.request(url, 'GET')[0]
 
     if results['status'] == '200':
-        #Reset user accounts
+        # Reset user accounts
         del login_session['access_token']
         del login_session['gplus_id']
         del login_session['username']
@@ -364,6 +394,7 @@ def gdisconnect():
             json.dumps('Failed to revoke token for given user.', 400))
         response.headers['Content-Type'] = 'application/json'
         return response
+
 
 # Disconnect based on provider
 @app.route('/logout')
@@ -384,6 +415,8 @@ def logout():
     else:
         flash("You were not logged in")
         return redirect(url_for('showCatalog'))
+
+
 if __name__ == '__main__':
     app.debug = True
     app.secret_key = "secret_key"
