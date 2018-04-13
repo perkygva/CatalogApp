@@ -7,11 +7,11 @@ It is the project for the **BackEnd** section in Udacity's Full Stack Nanodegree
 - Install the Vagrant and Virtual Box
 - Clone the GitHub repository [http://github.com/udacity/fullstack-nanodegree-vm](FullStack-VM)
 - Change director to where you saved the fullstack directory
-- Run the virtual machine and change into the vagrant directory!
-`$cd vagrant`
-`$vagrant up`
-`$vagrant ssh`
-`cd \vagrant`
+- Run the virtual machine and change into the vagrant directory!  
+`$cd vagrant`  
+`$vagrant up`  
+`$vagrant ssh`  
+`cd \vagrant`  
 - Change directory to the /vagrant directory by typing **cd /vagrant**.
 - Install all required packages in the requirements.txt file
 `$pip install -r requirements.txt`
