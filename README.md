@@ -11,16 +11,16 @@ It is the project for the **BackEnd** section in Udacity's Full Stack Nanodegree
 `$cd vagrant`  
 `$vagrant up`  
 `$vagrant ssh`  
-`cd \vagrant`  
+`$cd \vagrant`  
 - Change directory to the /vagrant directory by typing **cd /vagrant**.
 - Install all required packages in the requirements.txt file
 `$pip install -r requirements.txt`
 
 ## Running the Catalog App
 - Run `database_setup.py` to initialize the database.
-- Run `itemdump.py`
+- Run `itemdump.py` to populate the DB with fake data.
 - Run `application.py` to run the Flask web server.
-- In your browser visit **http://localhost:8000** to view the catalog main page.
+- In your browser type **http://localhost:8000** to view the catalog main page.
 
 ## Catalogg App
 Once the app is up and running you are able to view the main page, the item
@@ -30,10 +30,11 @@ by clicking on the login button. If attempting to edit something without being
 authorized, you'll receive a flash messaged (displayed at the top of the screen)
 If you're the owner, you can also delete items and categories.
 
-From the main page, you can access everything.
-- Use the navbar to add new categories and items.
+From the main page, you can access just about everything.
+- Use the nav-bar to add new categories and items.
 - Clicking on a category gives you the category item list and category edit options.
 - Clicking on an item gives you the item description and item editing page.
+- On the editing pages, you have the delete options.
 
 ### Authorization
 Authorization is only required to edit categories and items, being only the creator of them can actually edit them.
