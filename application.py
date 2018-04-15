@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, jsonify, url_for
+from flask import (Flask, render_template, request, redirect,
+                   jsonify, url_for)
 from flask import make_response, flash
 from sqlalchemy import create_engine, asc, desc
 from sqlalchemy.orm import sessionmaker
@@ -241,8 +242,9 @@ def newCategory():
         flash("New category {} added " .format(newCategory.name))
         return redirect(url_for('showCatalog'))
     else:
-        return render_template('newCategory.html')
         flash("Error creating new category, try again")
+        return render_template('newCategory.html')
+
 
 
 # Edit a category
@@ -253,8 +255,8 @@ def editCategory(category_id):
         return redirect('/login')
     editedCategory = session.query(Category).filter_by(id=category_id).one()
     if editedCategory.user_id != login_session["user_id"]:
-        redirect('/login')
-        return flash("You are not the owner of this category")
+        flash("You are not the owner of this category")
+        return redirect(url_for('showCatalog'))
     # POST methods
     if request.method == 'POST':
         if request.form['name']:
@@ -269,11 +271,12 @@ def editCategory(category_id):
 @app.route('/catalog/<int:category_id>/deleteCategory',
            methods=['GET', 'POST'])
 def deleteCategory(category_id):
+    if 'username' not in login_session:
+        redirect('/login')
     category = session.query(Category).filter_by(id=category_id).one()
     # See if the logged in user is the owner of item
     # If logged in user != item owner redirect them
-    if 'username' not in login_session:
-        redirect('/login')
+
     if category.user_id != login_session['user_id']:
         flash("""You cannot delete this category as it belongs to
                 someone else.""")
@@ -306,8 +309,9 @@ def addItem():
         flash('Item {} Successfully Added!' .format(newItem.name))
         return redirect(url_for('showCatalog'))
     else:
-        return render_template('addItem.html', category=category)
         flash("Item not added, please try again")
+        return render_template('addItem.html', category=category)
+
 
 
 # Edit an item
@@ -324,7 +328,7 @@ def editItem(item_id):
     if request.method == 'POST':
         if user != editedItem.user_id:
             flash("You cannot edit this item, as you don't own it!")
-            return redirect('/login')
+            return redirect(url_for('showCatalog'))
         if request.form['name']:
             category = session.query(Category).filter_by(
                         id=request.form['category']).one()
@@ -344,6 +348,8 @@ def editItem(item_id):
 # Delete an item
 @app.route('/catalog/<int:item_id>/deleteItem', methods=['GET', 'POST'])
 def deleteItem(item_id):
+    if 'username' not in login_session:
+        return redirect('/login')
     item = session.query(Items).filter_by(id=item_id).one()
     # See if the logged in user is the owner of item
     # If logged in user != item owner redirect them
@@ -377,7 +383,7 @@ def gdisconnect():
     h = httplib2.Http()
     result = h.request(url, 'GET')[0]
 
-    if results['status'] == '200':
+    if result['status'] == '200':
         # Reset user accounts
         del login_session['access_token']
         del login_session['gplus_id']

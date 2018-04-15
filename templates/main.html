@@ -31,7 +31,7 @@
 				<li {% if pagename == 'index' %}class="active"{% endif %}><a href="{{ url_for('showIndex') }}">Index</a></li>
        </ul>
        <ul class="nav navbar-nav navbar-right">
-				 {% if state %}
+				 {% if 'username' in session %}
          <li><a href="{{ url_for('logout') }}">Logout</a></li>
 				 {% else %}
 				 <li><a href="{{url_for('login')}}">Login</a></li>
